@@ -1,0 +1,15 @@
+
+#page_list{ padding-top:10px;	}
+.page_list_tb{
+	width:100%;
+	cellspacing:1px;
+	cellpadding:2px;
+	border:0;
+	background-color:#CFCFCF;
+	align:left;
+}
+.page_bar{
+	padding-top:10px;
+	background:#E7E7E7;
+} 
+.page_bar a {padding-right:5px;}

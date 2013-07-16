@@ -1,0 +1,49 @@
+
+ <div id='page_list'>
+	<table  class="page_list_tb" cellspacing="1" cellpadding="2" > 
+        <tr  class='tbtitle'><!-- 标题 --> 		
+	    {foreach from=$title_arr item=val name=title_foo}
+			<td class="list_td_{$smarty.foreach.title_foo.iteration}">{$val}</td>	        
+	    {/foreach}
+	    {if $with_operate}
+	    	<td  class="list_td_operate">操作</td>
+	    {/if}
+		</tr>
+		
+	    {if $data_arr}
+			{foreach from=$data_arr item=d_info}
+			<tr class='tblist'>
+				<!-- 数据 -->
+				{foreach from=$title_arr key=field item=val}
+					<td>{$d_info.$field}</td>
+				{/foreach}
+				{if $with_operate}
+					<!-- 操作 -->
+					<td style="text-align:center;">
+					{foreach from=$operate_arr item=o_val}
+						{eval $o_val}													
+					{/foreach}
+					</td>
+				{/if}
+			</tr>	
+			{/foreach}
+		{else}
+		<tr class='tblist'>
+		<td style="text-align:center;" colspan=
+			{if $with_operate}
+				'{$smarty.foreach.title_foo.total+1}'
+			{else}
+				'{$smarty.foreach.title_foo.total}'	
+			{/if}
+			>暂无数据
+		</td>
+	        
+	    </tr>		
+		{/if}
+	</table>
+</div>
+<!-- 分页bar -->
+<div class="page_bar" >
+	{$pagebarHtml}
+</div>
+	      

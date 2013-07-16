@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加特权区</title>
+
+<link type="text/css" rel="stylesheet" href="{$V_TPL}css/base.css"></link>
+<link type="text/css" rel="stylesheet" href="{$V_TPL}css/specarea.css"></link>
+<script type="text/javascript" src="{$V_TPL}js/jquery.js" language="javascript"></script>
+<script type="text/javascript" >
+	$(document).ready(function(){			
+			$('#add_modpage').click(function(){  
+                var options = $('#modpage_list option:selected');//获取当前选中的项
+                
+                var remove = options.remove();//删除下拉列表中选中的项                
+                remove.appendTo('#modpage_selected');//追加给对方  
+            });  
+              
+            $('#remove_modpage').click(function(){  
+                var removeOptions = $('#modpage_selected option:selected');  
+                removeOptions.appendTo('#modpage_list');//删除和追加可以用appendTo()直接完成  
+            });
+            
+            $("#add_type_btn").click(function (){       
+            	//简单的$.ajax:  $.get( url, [data], [callback], [type] )
+            	var new_type_val = $("#new_type").val();
+            	if(!new_type_val) {
+            		alert('请输入要添加的新分类名称');
+            		return false;
+            	}
+            	var url = "{$MVC_INDEX}?c=specarea&a=add_type"; 
+            	{literal}
+            	$.get(
+           			url,
+           			{'new_type':new_type_val}, 		
+           			function(rs){
+           				alert(rs.msg);
+           				
+           				var new_option;
+           				if(rs.status>0){
+           					$.each(rs.data, function(key, val){
+           						new_option = "<option value='"+key+"'>"+val+"</option>";           						
+           					})           					           					
+							//console.log(new_option);
+           					$(new_option).appendTo($("#type"));           					
+           				}           				
+           			},
+           			"json"
+            	);       
+            	{/literal}
+            })
+	});
+	
+	function checkForm(){ 
+		if(!$("#tag").val()) {
+			alert("请输入标签");
+			return false;
+		}
+		if(!$("#name").val()) {
+			alert("请输入名称");
+			return false;
+		}
+		
+		if(!$("#modpage_selected").val()) {
+			alert("请选择所属模板");
+			return false;
+		}
+		var body_val = CKEDITOR.instances.body.getData();
+		
+		if(!$("#body").val()) {
+			alert("请输入内容");
+			return false;
+		}
+		
+		//选中modapge所选项
+		var option_array = new Array();
+		$("#modpage_selected option").each(function(){
+			option_array.push($(this).val())
+		});
+		$("#modpage_selected").val(option_array);
+		
+		return true;
+	}
+	
+	
+	
+</script>
+</head>
+
+<body>
+<div class="main_content" style="width:1000px;">
+<input type="button" value="返回" onclick="window.history.go(-1)" style="margin:5px;"></input>
+<form method="post" action="{$MVC_INDEX}?c=specarea&a=add_do" onsubmit="return checkForm();">
+<table cellspacing="1" cellpadding="2" class="main_tb">
+  <tr class="tbtitle">
+    <th scope="col" colspan="2">添加--特权区;</th>
+  </tr>
+  <tr  class="tblist">
+    <td>标签(tag)(<span style="color:red	">*</span>)</td>
+    <td><input name="tag" id="tag" type="text" maxlength="20" style="width:300px;"/>(英文、数字或者下划线)</td>
+  </tr>
+  <tr  class="tblist">
+    <td>名称(name)(<span style="color:red	">*</span>)</td>
+    <td><input name="name" id="name" type="text" maxlength="20" style="width:300px;" /></td>
+  </tr>
+  <tr  class="tblist">
+    <td>描述(description)</td>
+    <td><textarea name="description" id="description" style="heigh:70px; width:570px;" ></textarea></td>
+  </tr>
+   
+   <tr  class="tblist">
+    <td>所属模板(modpage)(<span style="color:red	">*</span>)</td>
+    <td> 
+		<span>
+			<select size="7" multiple="multiple"  name="modpage_list[]" id="modpage_list">
+					<option value="">-- 请选择 --</option>
+				{foreach from=$modpage_list key=m_key item=modpage_info}
+					<option value="{$modpage_info}"> {$modpage_info}</option>
+				{/foreach}
+			 </select>
+		</span>
+		<span><input type="button" style="width:60px;" value="添加 &gt;&gt; " id="add_modpage">					    
+			  <input type="button" style="width:60px;" value=" &lt;&lt; 删除" id="remove_modpage">
+		</span>	
+		
+		<span>	
+			<select style="width:200px;height:110px;" size="7" multiple="multiple" name="modpage_selected[]" id="modpage_selected">					 
+			</select>
+		</span> 
+	</td>
+  </tr>
+   <tr  class="tblist">
+    <td>内容(body)(<span style="color:red	">*</span>)</td>
+    <td>		
+		<textarea  name="body" id="body" wrap="off" style="width:840px;height:450px;background:#ffffff;"></textarea>
+	</td>
+  </tr>
+ <tr  class="tblist">
+    <td>分类(type)</td>
+    <td>
+		<select name="type" id="type">
+				<option value="" >-- 请选择 --</option>
+			{foreach from=$type_list key=t_index item=type_info}
+				<option value="{$t_index}"> {$type_info}</option>
+			{/foreach}
+		</select>
+		&nbsp;&nbsp;( <a href="#" onclick="$('#div_new_type').toggle();">没有想要的分类?</a>
+		<span id="div_new_type" style="display:none;">
+			<input type="text" name="new_type" id="new_type"></input>
+			<input type="button" id="add_type_btn" value="添加新分类"></input>
+		</span>	)	
+	</td> 
+  </tr>
+ <tr  class="tblist">
+    <td>是否生成shtml</td>
+    <td><input name="make_shtml" type="radio" value="1"/>是 &nbsp;&nbsp;&nbsp;<input name="make_shtml" type="radio" value="0" />否</td>
+  </tr>
+  
+  <tr  class="tblist">    
+    <td colspan="2" style="text-align:center;"><input type="submit" value="提交"/></td>
+  </tr>
+</table>
+
+</form>
+</div>
+</body>
+</html>

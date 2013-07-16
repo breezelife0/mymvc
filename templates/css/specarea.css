@@ -1,0 +1,28 @@
+/*specarea_list*/
+.classuser {
+	width: 1000px;
+	padding-left:10px;
+}	 
+.col_t{
+	background:none repeat scroll 0 0 #CCCCCC;
+}
+#query_tb{
+	width:100%;
+	border-collapse:collapse;
+	border:1px solid #CFCFCF;
+	background-color:white;
+}
+#query_tb td{
+	border:1px solid #E7E7E7;
+}
+/*specare_upd and add*/
+.main_content {
+	width: 750px;
+	padding-left:10px;
+}	
+.main_tb{
+	 border:0;
+	 background-color:#CFCFCF;
+	 align:left;
+	 margin-top:8px;
+}

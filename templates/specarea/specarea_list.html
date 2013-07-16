@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>特权区列表</title>
+
+<link type="text/css" rel="stylesheet" href="{$V_TPL}css/base.css"></link>
+<link type="text/css" rel="stylesheet" href="{$V_TPL}css/tpl_page.css"></link>
+<link type="text/css" rel="stylesheet" href="{$V_TPL}css/specarea.css"></link>
+<script type="text/javascript" src="{$V_TPL}js/jquery.js" language="javascript"></script>
+<script type="text/javascript" src="{$V_TPL}js/simplePage.js" language="javascript"></script>
+<script type="text/javascript" >
+	$(function(){
+		$('div.classuser').simplePage({
+			q_url: "{$MVC_INDEX}?c=specarea&a=ajaxGetPageList",
+			form_id : "q_form",
+		});
+	})
+	function del_confim(go_url){
+		if(confirm("确定删除吗？")){
+			window.location.href=go_url;
+		}
+	}
+</script>
+<style type="text/css"> 
+	.list_td_1{ width:30px; }
+	.list_td_2{ width:160px; }
+	.list_td_3{ width:170px; }	
+	.list_td_5{ width:100px; }
+	.list_td_6{ width:80px; text-align:center;}
+	.list_td_operate{ width:80px; }
+</style>
+</head>
+
+<body>
+<div class="classuser">
+<input type="button" value="添加特权区" onclick="window.location.href='{$MVC_INDEX}?c=specarea&a=add'" style="margin:5px;"></input>
+
+<!-- 查询表单 start-->
+<form id="q_form" method="get">
+<table id="query_tb" cellspacing="2" cellpadding="5">
+   <tr class='tbtitle'><td colspan="6">特权区列表查询</td></tr>
+  <tr>
+	<td class="col_t">ID</td>
+	<td><input type="text" id="id" name="id"></input></td>
+	<td class="col_t">标签</td>
+	<td><input type="text" id="tag" name="tag"></input></td>
+	<td class="col_t">名称</td>
+	<td><input type="text" id="name" name="name"></input></td>
+  </tr>  
+  <tr>
+	<td class="col_t">模板</td>
+	<td>
+		<select name="modpage" id="modpage">
+			<option value="">-- 请选择 --</option>
+			{foreach from=$modpage_list key=m_key item=modpage_info}
+				<option value="{$modpage_info}"> {$modpage_info}</option>
+			{/foreach}
+		 </select>
+	</td>
+	<td class="col_t">type</td>
+	<td>
+		<select name="type" id="type">	
+			<option value="" >-- 请选择 --</option>
+			{foreach from=$type_list key=t_index item=type_info}
+				<option value="{$t_index}"> {$type_info}</option>
+			{/foreach}
+		</select>
+	</td>
+	<td colspan="2"><input type="button" class="query" value="查询" style="width:70px;"></td>	
+  </tr>  
+ </table> 
+</form>
+<!-- 查询表单 end-->
+
+<!-- 数据列表页 开始-->
+<div class="tableData">
+	{$page_list_html}
+</div>
+<!-- 数据列表页 结束-->
+</div>
+</body>
+</html>

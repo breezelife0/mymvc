@@ -1,0 +1,34 @@
+<script type="text/javascript">
+	function setGPage(page){ 
+		document.getElementById("goto_page").value = page;			
+	}
+</script>
+
+	<input type="hidden" name="goto_page" id="goto_page"></input> 
+
+	<a href='javascript:;' class="query" onclick="setGPage(1)">首页</a>
+	
+	{if $page lte 1}		
+   	    <a href='javascript:;'>已到达第一页</a>
+   	{else} 
+   		<a href='javascript:;' class="query" onclick="setGPage({$page-1})">上一页</a>
+	{/if}
+	<!-- [1][2][3][4][5][6][7][8][9][10] -->
+	{if $pnum_arr}
+		{foreach from=$pnum_arr item=num}			
+			<a href='javascript:;' class="query" onclick="setGPage({$num})">
+				{if $page eq $num}{$num}{else}[{$num}]{/if}
+			</a>
+		{/foreach}
+	{/if}
+	
+	{if $page gte $total_p}
+		<a href='javascript:;'>已到达最后一页</a>
+	{else}		 
+    	 <a href='javascript:;' class="query" onclick="setGPage({$page+1})">下一页</a>
+    {/if}
+   		
+	<a href='javascript:;' class="query" onclick="setGPage({$total_p})">尾页</a>
+	第{$page}/{$total_p}页
+	共[{$total_record}]条记录
+	
